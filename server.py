@@ -272,7 +272,7 @@ def resolve_youtube_via_invidious(url):
                 "duration": fmt_duration(data.get("lengthSeconds")),
                 "originalUrl": f"https://www.youtube.com/watch?v={vid}",
                 "formats": fmts,
-                "note": ("The first option is a video with sound — if you take it, no separate audio is needed. " if any("With sound" in f["label"] for f in fmts) else "") + "YouTube direct access is blocked, so info was fetched via the Invidious route — remaining formats may be video-only / audio separate.",
+                "note": ("The first option is a video with sound — if you take it, no separate audio is needed. " if any("With sound" in f["label"] for f in fmts) else "") + "YouTube direct access is blocked, so info was fetched via the Invidious route.",
             }
         except Exception:
             continue
