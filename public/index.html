@@ -137,12 +137,6 @@ footer{border-top:1px solid #eaecf0;padding:36px 0 44px;background:#f6f7f9}
       </div>
       <p class="hint">Tip: paste any link and the platform is auto-detected, showing the real video title, thumbnail and download options.</p>
       <div class="result" id="resultBox" aria-live="polite"></div>
-      <div class="q-row" id="fileMergeBox" style="margin-top:12px">
-        <div><span class="q-badge">MP4</span> <span class="q-name">Merge Downloaded Files (new method)</span><br><span class="q-size" id="fileMergeStatus">1) Download the 720p video-only file and M4A audio separately from AllVideoDownload (these download fast on your own connection, with no proxy/server block). 2) Choose those 2 files below and press Merge — they will be combined on your own device, no link is fetched, so CORS/403 does not apply here.</span><br>
-        <label style="display:block;margin-top:8px">Video file (MP4, video-only): <input type="file" id="fileMergeVideo" accept="video/mp4,.mp4"></label>
-        <label style="display:block;margin-top:6px">Audio file (M4A): <input type="file" id="fileMergeAudio" accept="audio/mp4,.m4a,audio/*"></label>
-        </div><button type="button" class="q-dl" id="fileMergeBtn">Merge Files</button>
-      </div>
     </div>
     <div class="trust-row">
       <span>✓ 100% Free</span><span>✓ No sign-up needed</span><span>✓ Up to HD</span><span>✓ Works on mobile and PC</span>
@@ -458,38 +452,6 @@ $('#urlInput').addEventListener('input',()=>markChips(detect($('#urlInput').valu
 $('#pasteBtn').onclick=async()=>{
   try{const t=await navigator.clipboard.readText();if(t){$('#urlInput').value=t;resolve();}else{$('#urlInput').focus();}}
   catch(e){$('#urlInput').focus();}
-};
-// Fresh file-based merge (2026-10-29): NO network fetch at all.
-// User downloads video-only + audio via the normal Download
-// buttons (fast, direct, no CORS/proxy/server 403), then picks
-// those 2 local files here. ffmpeg.wasm only muxes local files.
-document.getElementById('fileMergeBtn').onclick=async()=>{
-  const st=document.getElementById('fileMergeStatus');
-  const vf=document.getElementById('fileMergeVideo').files[0];
-  const af=document.getElementById('fileMergeAudio').files[0];
-  if(!vf||!af){st.textContent='Sorry: Please choose both a video file and an audio file.';return;}
-  try{
-    if(typeof FFmpeg==='undefined'||!FFmpeg.createFFmpeg){st.textContent='Sorry: FFmpeg did not load in this browser. Check your connection and try again.';return;}
-    st.textContent='Loading FFmpeg… (may take a little while the first time)';
-    if(!window._svFF){
-      const {createFFmpeg,fetchFile}=FFmpeg;
-      window._svFF={ffmpeg:createFFmpeg({log:false,corePath:'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js'}),fetchFile};
-      await window._svFF.ffmpeg.load();
-    }
-    const {ffmpeg,fetchFile}=window._svFF;
-    st.textContent='Reading files…';
-    ffmpeg.FS('writeFile','v.mp4',await fetchFile(vf));
-    ffmpeg.FS('writeFile','a.m4a',await fetchFile(af));
-    st.textContent='Combining video + audio…';
-    await ffmpeg.run('-i','v.mp4','-i','a.m4a','-c','copy','-shortest','out.mp4');
-    const out=ffmpeg.FS('readFile','out.mp4');
-    const blob=new Blob([out.buffer],{type:'video/mp4'});
-    const blobUrl=URL.createObjectURL(blob);
-    st.innerHTML='Ready! <a href="'+blobUrl+'" download="merged_sound.mp4">Download MP4 with sound ↗</a> ('+Math.round(blob.size/1048576)+' MB)';
-    try{ffmpeg.FS('unlink','v.mp4');ffmpeg.FS('unlink','a.m4a');ffmpeg.FS('unlink','out.mp4');}catch(e){}
-  }catch(e){
-    st.textContent='Sorry: File merge failed. '+(e&&e.message?e.message:'');
-  }
 };
 document.querySelectorAll('.qa button').forEach(b=>b.onclick=()=>b.parentElement.classList.toggle('open'));
 </script>
