@@ -174,7 +174,7 @@ footer{border-top:1px solid #eaecf0;padding:36px 0 44px;background:#f6f7f9}
     <div class="features">
       <article class="feat"><h3>Super fast</h3><p>Paste a link and real info and quality options are ready in seconds.</p></article>
       <article class="feat"><h3>Real quality</h3><p>Only quality that actually exists is shown — no fake 1080p is invented.</p></article>
-      <article class="feat"><h3>Audio separately</h3><p>Video-only formats are marked as having no audio; audio is provided separately as M4A/MP3.</p></article>
+      <article class="feat"><h3>Simple Download</h3><p>One Download button gives you the video with sound — no format choices to worry about.</p></article>
       <article class="feat"><h3>Works on all devices</h3><p>Android, iPhone, Windows, Mac — a browser is all you need, no app install.</p></article>
     </div>
   </div>
@@ -194,7 +194,7 @@ footer{border-top:1px solid #eaecf0;padding:36px 0 44px;background:#f6f7f9}
     <div class="faq" id="faqList">
       <div class="qa open"><button type="button">Is it really free? <span>⌄</span></button><div class="ans">Yes — there is no payment or sign-up step. Users can paste a link and download directly.</div></div>
       <div class="qa"><button type="button">Will private videos download? <span>⌄</span></button><div class="ans">No. Only public video links work. Private or login-required content is not supported.</div></div>
-      <div class="qa"><button type="button">Why is there no sound in the video? <span>⌄</span></button><div class="ans">Some formats are video-only — they are marked "Video-only, no audio". Download the audio separately, or choose an HD/SD format.</div></div>
+      <div class="qa"><button type="button">Why is there no sound in the video? <span>⌄</span></button><div class="ans">Press Download and you will get the version with sound. If the original video itself has no sound track, the downloaded file will also have none.</div></div>
       <div class="qa"><button type="button">Why does an ad appear on the first download click? <span>⌄</span></button><div class="ans">The first download click for each video opens a Sponsored link in a new tab. Later clicks for that video download directly; the first click for a new video opens a Sponsored link again.</div></div>
     </div>
       <div class="disclaimer"><strong>⚠ Responsible Use Notice (Disclaimer)</strong>This tool is only for downloading your own videos or content you have permission to download. Do not download copyrighted videos, music or other people's content without permission.</div>
@@ -406,17 +406,41 @@ async function resolve(){
         };
       }
     }
+    // User instruction 2026-10-29: show ONLY Download — no
+    // Video-only / Audio / With sound labels in the list.
+    // Keep ONE primary row: browser merge for YouTube, else
+    // the first direct With sound format, else the first format.
+    // That row's button is renamed to "Download" and its
+    // label/note spans are removed, so only Download remains.
+    // (File-merge box is outside #resultBox, so it is kept.)
+    (function(){
+      const box=document.querySelector('#resultBox');
+      if(!box) return;
+      const rows=[...box.querySelectorAll('.q-row')];
+      if(!rows.length) return;
+      let primary=rows.find(r=>r.querySelector('#browserMergeBtn'))
+        || rows.find(r=>{const n=r.querySelector('.q-name');return n && /With sound/.test(n.textContent) && r.querySelector('.dl-btn');})
+        || rows[0];
+      rows.forEach(r=>{if(r!==primary) r.remove();});
+      const btn=primary.querySelector('button');
+      if(btn) btn.textContent='Download';
+      primary.querySelectorAll('.q-badge,.q-name').forEach(e=>e.remove());
+      primary.querySelectorAll('.q-size').forEach(e=>{if(!/MergeStatus$/.test(e.id||'')) e.remove();});
+    })();
     // YouTube: if the fast list has no sound-included format yet,
     // fetch the android combined format in the background and
     // prepend it when it arrives — without blocking the first list.
     if(d.platform==='YouTube' && !(d.formats||[]).some(f=>/With sound/.test(f.label))){
       fetch('/api/combined?url='+encodeURIComponent(url)).then(r=>r.json()).then(c=>{
         if(!c.ok || !c.format) return;
+        // Single-Download rule: browser merge already kept as
+        // the only Download, so do not add a second row.
+        if(document.getElementById('browserMergeBtn')) return;
         const box=document.querySelector('#resultBox');
         if(!box) return;
         const row=document.createElement('div');
         row.className='q-row';
-        row.innerHTML=`<div><span class="q-badge">${esc(c.format.label.split('—')[0].trim())}</span> <span class="q-name">${esc(c.format.label)}</span><br><span class="q-size">${esc(c.format.note||'')}</span></div><button type="button" class="q-dl dl-btn" data-url="${esc(c.format.url)}">Download</button>`;
+        row.innerHTML=`<div></div><button type="button" class="q-dl dl-btn" data-url="${esc(c.format.url)}">Download</button>`;
         const first=box.querySelector('.q-row');
         if(first) box.insertBefore(row, first); else box.appendChild(row);
         attachDownloadButtons();
