@@ -201,8 +201,8 @@ footer{border-top:1px solid #eaecf0;padding:36px 0 44px;background:#f6f7f9}
   </div>
 </footer>
 <script type="module">
-import { FFmpeg } from 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js';
-import { fetchFile } from 'https://unpkg.com/@ffmpeg/util@0.12.2/dist/esm/index.js';
+import { FFmpeg } from '/ffmpeg/index.js';
+import { fetchFile } from '/util/index.js';
 // Single-thread core (ffmpeg-core.js, NOT core-mt.js) — runs
 // WITHOUT SharedArrayBuffer, so merge + ads can both work
 // under COEP credentialless (user chose this route 2026-10-29).
