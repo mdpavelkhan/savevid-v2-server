@@ -121,7 +121,7 @@ def build_formats(info, platform):
     for fid, label in (("hd", "MP4 — HD"), ("sd", "MP4 — SD")):
         f = by_id.get(fid)
         if f:
-            add(label, f["url"], "Facebook-এর আসল লিংক। এই লিংকে সময়সীমা থাকতে পারে — দেরি করলে লিংকটি আবার দিন।")
+            add(label, f["url"], "Real Facebook link. This link may expire — if you are late, fetch it again.")
 
     # 2) Combined (audio+video) formats FIRST — these are the ones a user
     #    can tap once and get a playable video with sound (TikTok, Facebook
@@ -131,13 +131,13 @@ def build_formats(info, platform):
     for f in raw:
         if (f.get("vcodec") in (None, "none") and f.get("acodec") in (None, "none")
                 and (f.get("ext") or "").lower() == "mp4"):
-            add("MP4 — সাউন্ডসহ", f["url"], "সাউন্ডসহ আসল ডাউনলোড লিংক — চাপ দিলেই ডাউনলোড হবে।")
+            add("MP4 — With sound", f["url"], "Real download link with sound — tap to download.")
             break
     for f in raw:
         if f.get("vcodec") not in (None, "none") and f.get("acodec") not in (None, "none"):
             h = f.get("height")
             res = f"{h}p" if h else ""
-            add(f"MP4 — {res} (সাউন্ডসহ)".strip(), f["url"], "সাউন্ডসহ আসল ডাউনলোড লিংক — চাপ দিলেই ডাউনলোড হবে।")
+            add(f"MP4 — {res} (With sound)".strip(), f["url"], "Real download link with sound — tap to download.")
             if len(formats) >= 3:
                 break
 
@@ -154,8 +154,8 @@ def build_formats(info, platform):
             best_video[h] = f
     for h in sorted(best_video, reverse=True)[:3]:
         f = best_video[h]
-        add(f"MP4 — {h}p (ভিডিও-only, অডিও নেই)", f["url"],
-            "এই ফাইলে অডিও থাকবে না — অডিও আলাদা করে নিন।")
+        add(f"MP4 — {h}p (Video-only, no audio)", f["url"],
+            "This file has no audio — get the audio separately.")
 
     # 4) Best audio-only.
     best_audio = None
@@ -165,12 +165,12 @@ def build_formats(info, platform):
                 best_audio = f
     if best_audio:
         ext = (best_audio.get("ext") or "audio").upper()
-        add(f"অডিও — {ext} (শুধু অডিও)", best_audio["url"], "শুধু অডিওর আসল লিংক।")
+        add(f"Audio — {ext} (Audio only)", best_audio["url"], "Real link for audio only.")
 
     # 5) Fallback: yt-dlp's own best requested format.
     for f in info.get("requested_formats") or []:
         if f.get("url"):
-            add("MP4 — ভিডিও", f["url"], "আসল ডাউনলোড লিংক।")
+            add("MP4 — Video", f["url"], "Real download link.")
             break
     return formats[:6]
 
@@ -234,9 +234,9 @@ def resolve_youtube_via_invidious(url):
                     continue
                 res = f.get("qualityLabel") or f.get("resolution") or ""
                 cont = (f.get("container") or "MP4").upper()
-                fmts.append({"label": f"{cont} — {res} (সাউন্ডসহ)",
+                fmts.append({"label": f"{cont} — {res} (With sound)",
                              "url": f["url"],
-                             "note": "সাউন্ডসহ আসল ডাউনলোড লিংক — চাপ দিলেই সাউন্ডসহ ভিডিও নামবে, আলাদা অডিও লাগবে না।"})
+                             "note": "Real download link with sound — tap to download the video with sound, no separate audio needed."})
             seen_res = set()
             videos = [f for f in data.get("adaptiveFormats") or []
                       if f.get("url") and (f.get("type") or "").startswith("video/")]
@@ -251,8 +251,8 @@ def resolve_youtube_via_invidious(url):
                     continue
                 seen_res.add(res)
                 cont = (f.get("container") or "MP4").upper()
-                fmts.append({"label": f"{cont} — {res} (ভিডিও-only, অডিও নেই)",
-                             "url": f["url"], "note": "ভিডিও-only — অডিও আলাদা ডাউনলোড করুন।"})
+                fmts.append({"label": f"{cont} — {res} (Video-only, no audio)",
+                             "url": f["url"], "note": "Video-only — download the audio separately."})
                 if len(fmts) >= 3:
                     break
             audios = [f for f in data.get("adaptiveFormats") or []
@@ -261,8 +261,8 @@ def resolve_youtube_via_invidious(url):
             if audios:
                 a = audios[0]
                 cont = (a.get("container") or "M4A").upper()
-                fmts.append({"label": f"অডিও — {cont} (শুধু অডিও)",
-                             "url": a["url"], "note": "শুধু অডিও।"})
+                fmts.append({"label": f"Audio — {cont} (Audio only)",
+                             "url": a["url"], "note": "Audio only."})
             if not fmts:
                 continue
             return {
@@ -272,7 +272,7 @@ def resolve_youtube_via_invidious(url):
                 "duration": fmt_duration(data.get("lengthSeconds")),
                 "originalUrl": f"https://www.youtube.com/watch?v={vid}",
                 "formats": fmts,
-                "note": ("প্রথম অপশনটি সাউন্ডসহ ভিডিও — সেটা নিলে আলাদা অডিও লাগবে না। " if any("সাউন্ডসহ" in f["label"] for f in fmts) else "") + "YouTube সরাসরি ব্লক করায় Invidious রুটে তথ্য আনা হয়েছে — বাকি ফরম্যাট ভিডিও-only / অডিও আলাদা হতে পারে।",
+                "note": ("The first option is a video with sound — if you take it, no separate audio is needed. " if any("With sound" in f["label"] for f in fmts) else "") + "YouTube direct access is blocked, so info was fetched via the Invidious route — remaining formats may be video-only / audio separate.",
             }
         except Exception:
             continue
@@ -306,25 +306,25 @@ def resolve_tiktok_via_tikwm(url):
     else:
         return None
     author = (d.get("author") or {}).get("nickname") or (d.get("author") or {}).get("unique_id")
-    fmts = [{"label": "MP4 — সাউন্ডসহ (নো-ওয়াটারমার্ক)", "url": d["play"],
-             "note": "সাউন্ডসহ আসল ডাউনলোড লিংক — চাপ দিলেই ডাউনলোড হবে।"}]
+    fmts = [{"label": "MP4 — With sound (no watermark)", "url": d["play"],
+             "note": "Real download link with sound — tap to download."}]
     if d.get("wmplay"):
-        fmts.append({"label": "MP4 — ওয়াটারমার্কসহ", "url": d["wmplay"],
-                     "note": "TikTok ওয়াটারমার্কসহ আসল লিংক।"})
+        fmts.append({"label": "MP4 — With watermark", "url": d["wmplay"],
+                     "note": "Real TikTok link with watermark."})
     if d.get("music"):
-        fmts.append({"label": "অডিও — MP3 (শুধু অডিও)", "url": d["music"],
-                     "note": "শুধু অডিওর আসল লিংক।"})
+        fmts.append({"label": "Audio — MP3 (Audio only)", "url": d["music"],
+                     "note": "Real link for audio only."})
     return {"ok": True, "platform": "TikTok", "title": d.get("title"),
             "author": author, "thumbnail": d.get("cover"),
             "duration": fmt_duration(d.get("duration")),
             "originalUrl": url, "formats": fmts,
-            "note": "TikTok সরাসরি ব্লক করায় TikWM রুটে তথ্য আনা হয়েছে।"}
+            "note": "TikTok direct access is blocked, so info was fetched via the TikWM route."}
 
 
 def resolve_youtube_combined(url):
     """One light yt-dlp run (android/ios, --format best, single small
     JSON) looking for a COMBINED audio+video MP4 — the one users
-    actually want ("সাউন্ডসহ"). Returns (info, format_dict) or
+    actually want ("With sound"). Returns (info, format_dict) or
     (None, None). Never --format all (that crashed Render free)."""
     import subprocess
     for client in ("android", "ios"):
@@ -354,9 +354,9 @@ def resolve_youtube_combined(url):
                     and f.get("acodec") not in (None, "none")):
                 h = f.get("height")
                 res = f"{h}p" if h else ""
-                label = f"MP4 — {res} (সাউন্ডসহ)".strip()
+                label = f"MP4 — {res} (With sound)".strip()
                 return info, {"label": label, "url": f["url"],
-                              "note": "সাউন্ডসহ আসল ডাউনলোড লিংক — চাপ দিলেই সাউন্ডসহ ভিডিও নামবে, আলাদা অডিও লাগবে না।"}
+                              "note": "Real download link with sound — tap to download the video with sound, no separate audio needed."}
     return None, None
 
 
@@ -452,33 +452,33 @@ def _merge_worker(job_id, video_url, audio_url, title):
                     return
             except Exception as e:
                 last = e
-        raise RuntimeError(f"{kind} ডাউনলোডে ব্যর্থ: {last}")
+        raise RuntimeError(f"{kind} Download failed: {last}")
     try:
         os.makedirs(base, exist_ok=True)
-        job["stage"] = "ভিডিও ডাউনলোড হচ্ছে…"
-        _try_all(video_url, os.path.join(base, "v.mp4"), "ভিডিও")
-        job["stage"] = "অডিও ডাউনলোড হচ্ছে…"
-        _try_all(audio_url, os.path.join(base, "a.m4a"), "অডিও")
-        job["stage"] = "ভিডিও + অডিও একসাথে করা হচ্ছে…"
+        job["stage"] = "Downloading video…"
+        _try_all(video_url, os.path.join(base, "v.mp4"), "Video")
+        job["stage"] = "Downloading audio…"
+        _try_all(audio_url, os.path.join(base, "a.m4a"), "Audio")
+        job["stage"] = "Combining video + audio…"
         exe = ffmpeg_exe()
         if not exe:
-            raise RuntimeError("সার্ভারে ffmpeg পাওয়া যায়নি।")
+            raise RuntimeError("ffmpeg was not found on the server.")
         out = os.path.join(base, "merged.mp4")
         p = subprocess.run([exe, "-y", "-i", os.path.join(base, "v.mp4"),
                             "-i", os.path.join(base, "a.m4a"),
                             "-c", "copy", "-shortest", out],
                            capture_output=True, text=True, timeout=600)
         if p.returncode != 0 or not os.path.exists(out):
-            raise RuntimeError("মার্জ করতে ব্যর্থ হয়েছে।")
+            raise RuntimeError("Merge failed.")
         os.remove(os.path.join(base, "v.mp4"))
         os.remove(os.path.join(base, "a.m4a"))
         job["file"] = out
         job["status"] = "ready"
-        job["stage"] = "তৈরি — ডাউনলোড করুন।"
+        job["stage"] = "Ready — download now."
     except Exception as e:
         job["status"] = "error"
         job["error"] = str(e)[:200]
-        job["stage"] = "ব্যর্থ হয়েছে।"
+        job["stage"] = "Failed."
 
 
 def start_youtube_merge(url):
@@ -488,7 +488,7 @@ def start_youtube_merge(url):
     Returns (job_id, error_or_None)."""
     vid = youtube_id_from_url(url)
     if not vid:
-        return None, "ভিডিওর লিংকটি বোঝা যায়নি।"
+        return None, "The video link could not be understood."
     import urllib.request
     data = None
     for base in [INVIDIOUS_INSTANCES[0]] * 2 + INVIDIOUS_INSTANCES[1:]:
@@ -504,7 +504,7 @@ def start_youtube_merge(url):
         except Exception:
             continue
     if not data:
-        return None, "Invidious থেকে ভিডিওর তথ্য আনা যায়নি। কিছুক্ষণ পর আবার চেষ্টা করুন।"
+        return None, "Video info could not be fetched from Invidious. Please try again later."
     # User's instruction 2026-10-29: merged output is 720p for ALL
     # videos (smaller, faster, more likely under the size guard).
     # Pick 720p if present, else closest to 720p. + M4A audio.
@@ -517,16 +517,16 @@ def start_youtube_merge(url):
     audios = [f for f in (data.get("adaptiveFormats") or [])
               if f.get("url") and (f.get("type") or "").startswith("audio/") and (f.get("container") or "").lower() == "m4a"]
     if not videos or not audios:
-        return None, "এই ভিডিওর জন্য মার্জ করার মতো ভিডিও/অডিও পাওয়া যায়নি।"
+        return None, "No video/audio suitable for merging was found for this video."
     v, a = videos[0], audios[0]
     # Rough size guard: (video+audio bitrate) * duration.
     dur = int(data.get("lengthSeconds") or 0)
     est = ((int(v.get("bitrate") or 0) + int(a.get("bitrate") or 0)) * dur) // 8 if dur else 0
     if est > 500 * 1024 * 1024:
-        return None, "ভিডিওটি অনেক বড় (৫০০MB-এর বেশি হবে), ফ্রি সার্ভারে মার্জ করা যাবে না। ৩৬০পি ভিডিও-only + আলাদা অডিও নিন।"
+        return None, "The video is too large (over 500MB), it cannot be merged on the free server. Take 360p video-only + separate audio."
     job_id = uuid.uuid4().hex[:16]
-    _MERGE_JOBS[job_id] = {"status": "working", "stage": "শুরু হচ্ছে…",
-                           "file": None, "title": data.get("title") or "YouTube ভিডিও",
+    _MERGE_JOBS[job_id] = {"status": "working", "stage": "Starting…",
+                           "file": None, "title": data.get("title") or "YouTube video",
                            "error": None, "created": time.time()}
     threading.Thread(target=_merge_worker,
                      args=(job_id, [f["url"] for f in videos],
@@ -546,7 +546,7 @@ def resolve(url):
         host = ""
     platform = platform_of(host) if ALLOWED.match(host) else None
     if not platform:
-        result = {"ok": False, "error": "এই লিংকটি সমর্থিত নয়। YouTube, Facebook, Instagram বা TikTok-এর লিংক দিন।"}
+        result = {"ok": False, "error": "This link is not supported. Give a YouTube, Facebook, Instagram or TikTok link."}
         _cache[url] = (now, result)
         return result
 
@@ -607,9 +607,9 @@ def resolve(url):
                 alt = None
         finally:
             _ex.shutdown(wait=False)
-        if alt and _cfmt and not any("সাউন্ডসহ" in f["label"] for f in (alt.get("formats") or [])):
+        if alt and _cfmt and not any("With sound" in f["label"] for f in (alt.get("formats") or [])):
             alt["formats"] = [_cfmt] + (alt.get("formats") or [])
-            alt["note"] = "প্রথম অপশনটি সাউন্ডসহ ভিডিও — সেটা নিলে আলাদা অডিও লাগবে না। " + (alt.get("note") or "")
+            alt["note"] = "The first option is a video with sound — if you take it, no separate audio is needed. " + (alt.get("note") or "")
             _cache[url] = (now, alt)
             return alt
         if alt:
@@ -618,7 +618,7 @@ def resolve(url):
         if _cinfo and _cfmt:
             title, author = clean_title(_cinfo.get("title"), _cinfo.get("uploader"))
             result = {"ok": True, "platform": "YouTube",
-                      "title": title or "YouTube ভিডিও", "author": author,
+                      "title": title or "YouTube video", "author": author,
                       "thumbnail": _cinfo.get("thumbnail"),
                       "duration": fmt_duration(_cinfo.get("duration")),
                       "originalUrl": _cinfo.get("webpage_url") or url,
@@ -661,21 +661,21 @@ def resolve(url):
             # blocked on; its API host is a different route and often works.
             proc = run_ytdlp(["--extractor-args", "tiktok:api_hostname=api16-normal-c-useast1a.tiktokv.com"])
     except FileNotFoundError:
-        return {"ok": False, "error": "সার্ভারে yt-dlp পাওয়া যায়নি। সার্ভার সেটআপে pip install -r requirements.txt চালাতে হবে।"}
+        return {"ok": False, "error": "yt-dlp was not found on the server. Run pip install -r requirements.txt in the server setup."}
     except subprocess.TimeoutExpired:
-        return {"ok": False, "error": "ভিডিওর তথ্য আনতে ৯০ সেকেন্ডের বেশি লাগছে। কিছুক্ষণ পর আবার চেষ্টা করুন।"}
+        return {"ok": False, "error": "Fetching video info is taking more than 90 seconds. Please try again later."}
 
     if proc.returncode != 0 or not proc.stdout.strip():
         err = (proc.stderr or "").strip().splitlines()
         msg = err[-1] if err else ""
         if "Private" in msg or "login" in msg.lower():
-            detail = "এই ভিডিওটি লগইন ছাড়া দেখা যাচ্ছে না — প্রাইভেট বা ফ্রেন্ডস-অনলি হতে পারে। শুধু পাবলিক ভিডিওই আসবে।"
+            detail = "This video cannot be viewed without login — it may be private or friends-only. Only public videos will work."
         else:
             # Show the real yt-dlp reason (truncated) so a failure is diagnosable
             # instead of the same generic message every time.
-            detail = "ভিডিওর তথ্য আনা যায়নি। লিংকটি পাবলিক কিনা দেখুন, কিছুক্ষণ পর আবার চেষ্টা করুন।"
+            detail = "Video info could not be fetched. Check whether the link is public, then try again later."
             if msg:
-                detail += " (সার্ভার: " + msg[:200] + ")"
+                detail += " (server: " + msg[:200] + ")"
         # Route 3 for YouTube: Invidious fallback, before giving up.
         if platform == "YouTube":
             alt = resolve_youtube_via_invidious(url)
@@ -701,7 +701,7 @@ def resolve(url):
         try:
             info = json.loads(proc.stdout)
         except json.JSONDecodeError:
-            return {"ok": False, "error": "সার্ভারের উত্তর বোঝা যায়নি। আবার চেষ্টা করুন।"}
+            return {"ok": False, "error": "The server response could not be understood. Please try again."}
 
     title, author = clean_title(info.get("title"), info.get("uploader"))
     # yt-dlp's Facebook uploader is often the whole "views | caption | Page"
@@ -716,7 +716,7 @@ def resolve(url):
     result = {
         "ok": True,
         "platform": platform,
-        "title": title or f"{platform} ভিডিও",
+        "title": title or f"{platform} Video",
         "author": author,
         "thumbnail": info.get("thumbnail"),
         "duration": fmt_duration(info.get("duration")),
@@ -724,7 +724,7 @@ def resolve(url):
         "formats": formats,
     }
     if not formats:
-        result["message"] = "পেজ থেকে নাম/ছবি পাওয়া গেছে, কিন্তু ডাউনলোড লিংক পাওয়া যায়নি। ভিডিওটি পাবলিক হলে আবার চেষ্টা করুন।"
+        result["message"] = "Title/thumbnail were found from the page, but no download link was found. If the video is public, try again."
     _cache[url] = (now, result)
     return result
 
@@ -782,14 +782,14 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/resolve":
             url = urllib.parse.parse_qs(parsed.query).get("url", [""])[0]
             if not url:
-                self._send_json({"ok": False, "error": "কোনো লিংক দেওয়া হয়নি।"}, 400)
+                self._send_json({"ok": False, "error": "No link provided."}, 400)
                 return
             self._send_json(resolve(url))
             return
         if path == "/api/merge":
             url = urllib.parse.parse_qs(parsed.query).get("url", [""])[0]
             if not url:
-                self._send_json({"ok": False, "error": "কোনো লিংক দেওয়া হয়নি।"}, 400)
+                self._send_json({"ok": False, "error": "No link provided."}, 400)
                 return
             job_id, err = start_youtube_merge(url)
             if err:
@@ -806,7 +806,7 @@ class Handler(BaseHTTPRequestHandler):
             qs = urllib.parse.parse_qs(parsed.query)
             vurl, aurl = qs.get("v", [""])[0], qs.get("a", [""])[0]
             if not vurl or not aurl:
-                self._send_json({"ok": False, "error": "ভিডিও/অডিও লিংক দেওয়া হয়নি।"}, 400)
+                self._send_json({"ok": False, "error": "Video/audio link not provided."}, 400)
                 return
             def _ok_host(u):
                 h = (urllib.parse.urlparse(u).hostname or "").lower()
@@ -814,14 +814,14 @@ class Handler(BaseHTTPRequestHandler):
                            ("fbcdn.net", "googlevideo.com", "cdninstagram.com",
                             "tiktokcdn.com", "tiktokcdn-us.com"))
             if not _ok_host(vurl) or not _ok_host(aurl):
-                self._send_json({"ok": False, "error": "এই লিংক মার্জ করা যাবে না।"}, 400)
+                self._send_json({"ok": False, "error": "This link cannot be merged."}, 400)
                 return
             job_id = uuid.uuid4().hex[:16]
-            _MERGE_JOBS[job_id] = {"status": "working", "stage": "শুরু হচ্ছে…",
-                                   "file": None, "title": "Facebook ভিডিও",
+            _MERGE_JOBS[job_id] = {"status": "working", "stage": "Starting…",
+                                   "file": None, "title": "Facebook video",
                                    "error": None, "created": time.time()}
             threading.Thread(target=_merge_worker,
-                             args=(job_id, vurl, aurl, "Facebook ভিডিও"),
+                             args=(job_id, vurl, aurl, "Facebook video"),
                              daemon=True).start()
             self._send_json({"ok": True, "job": job_id})
             return
@@ -829,7 +829,7 @@ class Handler(BaseHTTPRequestHandler):
             job_id = urllib.parse.parse_qs(parsed.query).get("job", [""])[0]
             job = _MERGE_JOBS.get(job_id)
             if not job:
-                self._send_json({"ok": False, "error": "মার্জ জব পাওয়া যায়নি।"}, 404)
+                self._send_json({"ok": False, "error": "Merge job not found."}, 404)
                 return
             self._send_json({"ok": True, "status": job["status"],
                              "stage": job["stage"], "error": job["error"],
@@ -865,7 +865,7 @@ class Handler(BaseHTTPRequestHandler):
             # combined format when (and if) it arrives.
             url = urllib.parse.parse_qs(parsed.query).get("url", [""])[0]
             if not url:
-                self._send_json({"ok": False, "error": "কোনো লিংক দেওয়া হয়নি।"}, 400)
+                self._send_json({"ok": False, "error": "No link provided."}, 400)
                 return
             _info, _fmt = resolve_youtube_combined(url)
             if _fmt:
