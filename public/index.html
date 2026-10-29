@@ -200,7 +200,14 @@ footer{border-top:1px solid #eaecf0;padding:36px 0 44px;background:#f6f7f9}
     <nav class="foot-links"><a href="#how">How it works</a><a href="#faq">FAQ</a></nav>
   </div>
 </footer>
-<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.10.1/dist/ffmpeg.min.js"></script>
+<script type="module">
+import { FFmpeg } from 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js';
+import { fetchFile } from 'https://unpkg.com/@ffmpeg/util@0.12.2/dist/esm/index.js';
+// Single-thread core (ffmpeg-core.js, NOT core-mt.js) — runs
+// WITHOUT SharedArrayBuffer, so merge + ads can both work
+// under COEP credentialless (user chose this route 2026-10-29).
+window._svFFmpeg={FFmpeg, fetchFile};
+</script>
 <script>
 const $=s=>document.querySelector(s);
 try{localStorage.removeItem('savevid_history');}catch(e){} // old 'previous video' list removed 2026-10-28: no history is kept now
@@ -363,14 +370,16 @@ async function resolve(){
           }
           const st=document.getElementById('browserMergeStatus');
           try{
-            if(typeof FFmpeg==='undefined'||!FFmpeg.createFFmpeg){st.textContent='Sorry: FFmpeg did not load in this browser. Check your connection and try again.';return;}
             st.textContent='Loading FFmpeg… (may take a little while the first time)';
-            if(!window._svFF){
-              const {createFFmpeg,fetchFile}=FFmpeg;
-              window._svFF={ffmpeg:createFFmpeg({log:false,corePath:'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js'}),fetchFile};
-              await window._svFF.ffmpeg.load();
+            if(!window._svFF12){
+              // Wait for the ESM module above to load (max ~10s)
+              for(let i=0;i<20 && !window._svFFmpeg;i++) await new Promise(r=>setTimeout(r,500));
+              if(!window._svFFmpeg){st.textContent='Sorry: FFmpeg did not load in this browser. Check your connection and try again.';return;}
+              const ffmpeg=new window._svFFmpeg.FFmpeg();
+              await ffmpeg.load({coreURL:'https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm/ffmpeg-core.js', wasmURL:'https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm/ffmpeg-core.wasm'});
+              window._svFF12={ffmpeg, fetchFile:window._svFFmpeg.fetchFile};
             }
-            const {ffmpeg,fetchFile}=window._svFF;
+            const {ffmpeg,fetchFile}=window._svFF12;
             // Cloudflare Worker proxy (user chose this route after
             // Oracle declined his card). For now this is a public
             // test Worker (proxy.life23243.workers.dev, ?link= format,
@@ -384,16 +393,16 @@ async function resolve(){
             const vdata=await fetchFile(viaWorker(vids[0].url));
             st.textContent='Downloading audio…';
             const adata=await fetchFile(viaWorker(aud.url));
-            ffmpeg.FS('writeFile','v.mp4',vdata);
-            ffmpeg.FS('writeFile','a.m4a',adata);
+            await ffmpeg.writeFile('v.mp4',vdata);
+            await ffmpeg.writeFile('a.m4a',adata);
             st.textContent='Combining video + audio…';
-            await ffmpeg.run('-i','v.mp4','-i','a.m4a','-c','copy','-shortest','out.mp4');
-            const out=ffmpeg.FS('readFile','out.mp4');
-            const blob=new Blob([out.buffer],{type:'video/mp4'});
+            await ffmpeg.exec(['-i','v.mp4','-i','a.m4a','-c','copy','-shortest','out.mp4']);
+            const out=await ffmpeg.readFile('out.mp4');
+            const blob=new Blob([out],{type:'video/mp4'});
             const blobUrl=URL.createObjectURL(blob);
-            const safeTitle=(d.title||'video').replace(/[^\w\u0980-\u09FF\- ]+/g,'').trim().slice(0,60)||'video';
+            const safeTitle=(d.title||'video').replace(/[^\w\- ]+/g,'').trim().slice(0,60)||'video';
             st.innerHTML='Ready! <a href="'+blobUrl+'" download="'+esc(safeTitle)+'_sound.mp4">Download MP4 with sound ↗</a> ('+Math.round(blob.size/1048576)+' MB)';
-            try{ffmpeg.FS('unlink','v.mp4');ffmpeg.FS('unlink','a.m4a');ffmpeg.FS('unlink','out.mp4');}catch(e){}
+            try{await ffmpeg.deleteFile('v.mp4');await ffmpeg.deleteFile('a.m4a');await ffmpeg.deleteFile('out.mp4');}catch(e){}
           }catch(e){
             st.textContent='Sorry: Browser merge failed. '+(e&&e.message?e.message:'')+' If it is a CORS/network error, this video link cannot be fetched from the browser.';
           }
