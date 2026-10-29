@@ -871,6 +871,41 @@ class Handler(BaseHTTPRequestHandler):
             else:
                 self._send_json({"ok": False})
             return
+        # Same-origin FFmpeg JS (2026-10-29, single-thread fix):
+        # ffmpeg 0.12 creates a module Worker from its own
+        # index.js origin — a cross-origin unpkg Worker is
+        # blocked by browsers even with CORS and even with
+        # NO COOP/COEP (proven by the 52fb83e live test).
+        # So /ffmpeg/*.js and /util/*.js are proxied through
+        # this same origin; the Worker is then same-origin,
+        # while the large core/wasm stay on unpkg (loaded by
+        # dynamic import inside the Worker, which is CORS-ok).
+        _ff = None
+        if path.startswith("/ffmpeg/"):
+            _ff = ("https://unpkg.com/@ffmpeg/ffmpeg@0.12.15/dist/esm/"
+                   + path[len("/ffmpeg/"):])
+        elif path.startswith("/util/"):
+            _ff = ("https://unpkg.com/@ffmpeg/util@0.12.2/dist/esm/"
+                   + path[len("/util/"):])
+        if _ff is not None:
+            _name = _ff.rsplit("/", 1)[-1]
+            if not _name.endswith(".js") or "/" in _name:
+                self.send_response(404)
+                self.end_headers()
+                return
+            try:
+                import urllib.request as _ureq
+                with _ureq.urlopen(_ff, timeout=30) as _r:
+                    _body = _r.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "text/javascript; charset=utf-8")
+                self.send_header("Content-Length", str(len(_body)))
+                self.end_headers()
+                self.wfile.write(_body)
+            except Exception:
+                self.send_response(502)
+                self.end_headers()
+            return
         if path in ("/", "/index.html"):
             self._send_file(os.path.join("public", "index.html"), "text/html; charset=utf-8")
             return
