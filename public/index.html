@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SaveVid — YouTube, Facebook, Instagram, TikTok ভিডিও ডাউনলোডার</title>
-<meta name="description" content="SaveVid দিয়ে YouTube, Facebook, Instagram ও TikTok-এর ভিডিও লিংক থেকে আসল ভিডিও তথ্য ও ডাউনলোড অপশন দেখুন। শুধু নিজের বা অনুমতি থাকা ভিডিওর জন্য ব্যবহার করুন।">
+<title>AllVideoDownload — YouTube, Facebook, Instagram, TikTok Video Downloader</title>
+<meta name="description" content="With AllVideoDownload, see real video info and download options from YouTube, Facebook, Instagram and TikTok links. Use only for your own videos or videos you have permission to download.">
 <meta name="robots" content="index, follow">
-<meta name="google-site-verification" content="sErOvsW13sMTv7nci2qsj3uvu-RY9pGrxCBuEowfl4Y" />
-<meta property="og:title" content="SaveVid — Free Video Downloader">
+<meta property="og:title" content="AllVideoDownload — Free Video Downloader">
 <meta property="og:description" content="Download videos from YouTube, Facebook, Instagram and TikTok in HD MP4 or audio — free, no sign-up.">
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:"Hind Siliguri",system-ui,-apple-system,"Noto Sans Bengali",sans-serif;background:#fff;color:#101828;line-height:1.6}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#fff;color:#101828;line-height:1.6}
 a{color:inherit;text-decoration:none}button,input{font:inherit}
 .wrap{width:min(1120px,100% - 40px);margin:0 auto}
 @media(max-width:640px){.wrap{width:calc(100% - 32px)}}
@@ -107,46 +106,46 @@ footer{border-top:1px solid #eaecf0;padding:36px 0 44px;background:#f6f7f9}
 <body>
 <header class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="#"><span class="brand-mark">↓</span><span>Save<em>Vid</em></span></a>
+    <a class="brand" href="#"><span class="brand-mark">↓</span><span>All<em>Video</em>Download</span></a>
     <nav class="nav-links">
-      <a href="#how">কিভাবে কাজ করে</a>
-      <a href="#faq">সাধারণ জিজ্ঞাসা</a>
+      <a href="#how">How it works</a>
+      <a href="#faq">FAQ</a>
     </nav>
-    <a class="nav-cta" href="#downloader">ডাউনলোড শুরু করুন</a>
+    <a class="nav-cta" href="#downloader">Start Download</a>
   </div>
 </header>
 <div class="hero" id="downloader">
   <div class="wrap hero-inner">
-    <div class="hero-logo"><span class="brand-mark">↓</span><span>Save<em>Vid</em></span></div>
-    <h1>যেকোনো প্ল্যাটফর্মের ভিডিও <span class="hl">এক ক্লিকেই</span> ডাউনলোড করুন</h1>
-    <p>YouTube, Facebook, Instagram আর TikTok — শুধু ভিডিওর লিংকটা পেস্ট করুন। <strong>কোয়ালিটি বেছে নিন, ডাউনলোড করুন।</strong> কোনো অ্যাপ লাগবে না, সাইন-আপও না।</p>
+    <div class="hero-logo"><span class="brand-mark">↓</span><span>All<em>Video</em>Download</span></div>
+    <h1>Download videos from any platform <span class="hl">in one click</span></h1>
+    <p>YouTube, Facebook, Instagram and TikTok — just paste the video link. <strong>Choose quality, download.</strong> No app, no sign-up needed.</p>
     <div class="dl-card">
       <div class="dl-top">
         <label class="input-wrap">
           <span>🔗</span>
-          <input id="urlInput" type="url" inputmode="url" placeholder="এখানে ভিডিওর লিংক পেস্ট করুন — যেমন: youtube.com/watch?v=..." autocomplete="off">
+          <input id="urlInput" type="url" inputmode="url" placeholder="Paste a video link here — e.g. youtube.com/watch?v=..." autocomplete="off">
           <button class="paste-btn" id="pasteBtn" type="button">Paste</button>
         </label>
-        <button class="fetch-btn" id="fetchBtn" type="button">↓ ভিডিও আনুন</button>
+        <button class="fetch-btn" id="fetchBtn" type="button">↓ Fetch Video</button>
       </div>
       <div class="detect-row" id="detectRow">
-        <span class="detect-label">সাপোর্টেড:</span>
+        <span class="detect-label">Supported:</span>
         <span class="chip" data-plat="youtube">▶ YouTube</span>
         <span class="chip" data-plat="facebook">f Facebook</span>
         <span class="chip" data-plat="instagram">◎ Instagram</span>
         <span class="chip" data-plat="tiktok">♪ TikTok</span>
       </div>
-      <p class="hint">টিপ: যেকোনো একটা লিংক পেস্ট করলেই খোঁজা শুরু হবে, প্ল্যাটফর্ম অটো-ডিটেক্ট হয়ে আসল ভিডিওর নাম, ছবি ও ডাউনলোড অপশন দেখাবে।</p>
+      <p class="hint">Tip: paste any link and the platform is auto-detected, showing the real video title, thumbnail and download options.</p>
       <div class="result" id="resultBox" aria-live="polite"></div>
       <div class="q-row" id="fileMergeBox" style="margin-top:12px">
-        <div><span class="q-badge">MP4</span> <span class="q-name">ডাউনলোড করা ফাইল মার্জ করুন (নতুন পদ্ধতি)</span><br><span class="q-size" id="fileMergeStatus">১) SaveVid থেকে ৭২০পি ভিডিও-only আর M4A অডিও আলাদা ডাউনলোড করুন (এগুলো আপনার ফোনের নেটে দ্রুত নামে, কোনো প্রক্সি/সার্ভার ব্লক নেই)। ২) নিচে সেই ২টা ফাইল বেছে মার্জ চাপুন — আপনার ফোনেই এক হবে, কোনো লিংক টানা হবে না, তাই CORS/৪০৩ এখানে আসবে না।</span><br>
-        <label style="display:block;margin-top:8px">ভিডিও ফাইল (MP4, ভিডিও-only): <input type="file" id="fileMergeVideo" accept="video/mp4,.mp4"></label>
-        <label style="display:block;margin-top:6px">অডিও ফাইল (M4A): <input type="file" id="fileMergeAudio" accept="audio/mp4,.m4a,audio/*"></label>
-        </div><button type="button" class="q-dl" id="fileMergeBtn">ফাইল মার্জ করুন</button>
+        <div><span class="q-badge">MP4</span> <span class="q-name">Merge Downloaded Files (new method)</span><br><span class="q-size" id="fileMergeStatus">1) Download the 720p video-only file and M4A audio separately from AllVideoDownload (these download fast on your own connection, with no proxy/server block). 2) Choose those 2 files below and press Merge — they will be combined on your own device, no link is fetched, so CORS/403 does not apply here.</span><br>
+        <label style="display:block;margin-top:8px">Video file (MP4, video-only): <input type="file" id="fileMergeVideo" accept="video/mp4,.mp4"></label>
+        <label style="display:block;margin-top:6px">Audio file (M4A): <input type="file" id="fileMergeAudio" accept="audio/mp4,.m4a,audio/*"></label>
+        </div><button type="button" class="q-dl" id="fileMergeBtn">Merge Files</button>
       </div>
     </div>
     <div class="trust-row">
-      <span>✓ 100% ফ্রি</span><span>✓ সাইন-আপ লাগবে না</span><span>✓ HD পর্যন্ত</span><span>✓ মোবাইল ও PC — দুটোতেই চলে</span>
+      <span>✓ 100% Free</span><span>✓ No sign-up needed</span><span>✓ Up to HD</span><span>✓ Works on mobile and PC</span>
     </div>
   </div>
 </div>
@@ -161,22 +160,22 @@ footer{border-top:1px solid #eaecf0;padding:36px 0 44px;background:#f6f7f9}
 </div>
 <section class="soft" id="how">
   <div class="wrap">
-    <div class="sec-head center"><h2>মাত্র ৩ ধাপে ডাউনলোড</h2><p>কোনো টেকনিক্যাল ঝামেলা নেই — যে কেউ পারবে।</p></div>
+    <div class="sec-head center"><h2>Download in just 3 steps</h2><p>No technical hassle — anyone can do it.</p></div>
     <div class="steps">
-      <article class="step"><div class="step-num">Step 01</div><h3>লিংক কপি করুন</h3><p>YouTube / Facebook / TikTok অ্যাপে ভিডিওটা খুলে Share → Copy Link চাপুন।</p></article>
-      <article class="step"><div class="step-num">Step 02</div><h3>এখানে পেস্ট করুন</h3><p>উপরের বক্সে লিংকটা পেস্ট করুন। প্ল্যাটফর্ম অটো-ডিটেক্ট হয়ে আসল নাম, ছবি ও ডাউনলোড অপশন আসবে।</p></article>
-      <article class="step"><div class="step-num">Step 03</div><h3>কোয়ালিটি বেছে ডাউনলোড</h3><p>পছন্দের ফরম্যাটে Download চাপ দিন। এই ভিডিওর প্রথম ক্লিকে Sponsored লিংক খুলবে, পরের ক্লিকে সরাসরি ডাউনলোড হবে।</p></article>
+      <article class="step"><div class="step-num">Step 01</div><h3>Copy the link</h3><p>Open the video in the YouTube / Facebook / TikTok app and tap Share → Copy Link.</p></article>
+      <article class="step"><div class="step-num">Step 02</div><h3>Paste it here</h3><p>Paste the link in the box above. The platform is auto-detected and the real title, thumbnail and download options appear.</p></article>
+      <article class="step"><div class="step-num">Step 03</div><h3>Choose quality and download</h3><p>Tap Download on your chosen format. The first click for this video opens a Sponsored link; later clicks download directly.</p></article>
     </div>
   </div>
 </section>
 <section>
   <div class="wrap">
-    <div class="sec-head"><h2>কেন এই ডাউনলোডার?</h2><p>ভুয়া বাটন নয় — শুধু সার্ভার থেকে আসা আসল ফরম্যাটই দেখানো হয়।</p></div>
+    <div class="sec-head"><h2>Why this downloader?</h2><p>No fake buttons — only real formats returned by the server are shown.</p></div>
     <div class="features">
-      <article class="feat"><h3>সুপার ফাস্ট</h3><p>লিংক দিলেই কয়েক সেকেন্ডে আসল তথ্য ও কোয়ালিটি অপশন রেডি।</p></article>
-      <article class="feat"><h3>আসল কোয়ালিটি</h3><p>যে কোয়ালিটি আসলেই আছে, শুধু সেটাই দেখানো হয় — ভুয়া 1080p বানানো হয় না।</p></article>
-      <article class="feat"><h3>অডিও আলাদা</h3><p>ভিডিও-only ফরম্যাটে অডিও নেই লেখা থাকে, অডিও আলাদা M4A/MP3 হিসেবে দেওয়া হয়।</p></article>
-      <article class="feat"><h3>সব ডিভাইসে চলে</h3><p>Android, iPhone, Windows, Mac — ব্রাউজার থাকলেই হবে, অ্যাপ ইন্সটল লাগবে না।</p></article>
+      <article class="feat"><h3>Super fast</h3><p>Paste a link and real info and quality options are ready in seconds.</p></article>
+      <article class="feat"><h3>Real quality</h3><p>Only quality that actually exists is shown — no fake 1080p is invented.</p></article>
+      <article class="feat"><h3>Audio separately</h3><p>Video-only formats are marked as having no audio; audio is provided separately as M4A/MP3.</p></article>
+      <article class="feat"><h3>Works on all devices</h3><p>Android, iPhone, Windows, Mac — a browser is all you need, no app install.</p></article>
     </div>
   </div>
 </section>
@@ -191,20 +190,20 @@ footer{border-top:1px solid #eaecf0;padding:36px 0 44px;background:#f6f7f9}
 </div>
 <section id="faq">
   <div class="wrap">
-    <div class="sec-head center"><h2>সাধারণ জিজ্ঞাসা</h2><p>ব্যবহারকারীরা সবচেয়ে বেশি যেসব প্রশ্ন করবে।</p></div>
+    <div class="sec-head center"><h2>FAQ</h2><p>The questions users ask most.</p></div>
     <div class="faq" id="faqList">
-      <div class="qa open"><button type="button">এটা কি সত্যিই ফ্রি? <span>⌄</span></button><div class="ans">হ্যাঁ — কোনো পেমেন্ট বা সাইন-আপের ধাপ নেই। ব্যবহারকারী সরাসরি লিংক পেস্ট করে ডাউনলোড করতে পারবে।</div></div>
-      <div class="qa"><button type="button">প্রাইভেট ভিডিও কি ডাউনলোড হবে? <span>⌄</span></button><div class="ans">না। শুধু পাবলিক ভিডিওর লিংক কাজ করবে। প্রাইভেট বা লগইন-লাগে এমন কনটেন্ট সাপোর্ট করা হবে না।</div></div>
-      <div class="qa"><button type="button">ভিডিওতে শব্দ নেই কেন? <span>⌄</span></button><div class="ans">কিছু ফরম্যাট ভিডিও-only — সেগুলোর পাশে "ভিডিও-only, অডিও নেই" লেখা থাকে। অডিও আলাদা করে ডাউনলোড করুন, অথবা HD/SD ফরম্যাট বেছে নিন।</div></div>
-      <div class="qa"><button type="button">প্রথম ডাউনলোড ক্লিকে অ্যাড কেন আসে? <span>⌄</span></button><div class="ans">প্রতিটি ভিডিওর প্রথম ডাউনলোড ক্লিকে একটি Sponsored লিংক নতুন ট্যাবে খুলবে। ওই ভিডিওর পরের ক্লিকগুলোতে সরাসরি ডাউনলোড হবে, নতুন ভিডিওর প্রথম ক্লিকে আবার Sponsored লিংক খুলবে।</div></div>
+      <div class="qa open"><button type="button">Is it really free? <span>⌄</span></button><div class="ans">Yes — there is no payment or sign-up step. Users can paste a link and download directly.</div></div>
+      <div class="qa"><button type="button">Will private videos download? <span>⌄</span></button><div class="ans">No. Only public video links work. Private or login-required content is not supported.</div></div>
+      <div class="qa"><button type="button">Why is there no sound in the video? <span>⌄</span></button><div class="ans">Some formats are video-only — they are marked "Video-only, no audio". Download the audio separately, or choose an HD/SD format.</div></div>
+      <div class="qa"><button type="button">Why does an ad appear on the first download click? <span>⌄</span></button><div class="ans">The first download click for each video opens a Sponsored link in a new tab. Later clicks for that video download directly; the first click for a new video opens a Sponsored link again.</div></div>
     </div>
-    <div class="disclaimer"><strong>⚠ দায়িত্বশীল ব্যবহারের নোটিশ (Disclaimer)</strong>এই টুলটি শুধুমাত্র নিজের ভিডিও বা অনুমতি আছে এমন কনটেন্ট ডাউনলোডের জন্য। কপিরাইটযুক্ত ভিডিও, গান বা অন্যের কনটেন্ট অনুমতি ছাড়া ডাউনলোড ও পুনঃপ্রকাশ করা সংশ্লিষ্ট প্ল্যাটফর্মের নিয়ম ও কপিরাইট আইনের লঙ্ঘন হতে পারে।</div>
+      <div class="disclaimer"><strong>⚠ Responsible Use Notice (Disclaimer)</strong>This tool is only for downloading your own videos or content you have permission to download. Do not download copyrighted videos, music or other people's content without permission.</div>
   </div>
 </section>
 <footer>
   <div class="wrap foot">
-    <div><a class="brand" href="#" style="font-size:20px"><span class="brand-mark" style="width:32px;height:32px">↓</span><span>Save<em>Vid</em></span></a><p>Free Video Downloader — YouTube, Facebook, Instagram ও TikTok ভিডিও HD MP4 / অডিওতে ডাউনলোডের সহজ টুল।</p></div>
-    <nav class="foot-links"><a href="#how">কিভাবে কাজ করে</a><a href="#faq">FAQ</a></nav>
+    <div><a class="brand" href="#" style="font-size:20px"><span class="brand-mark" style="width:32px;height:32px">↓</span><span>All<em>Video</em>Download</span></a><p>Free Video Downloader — an easy tool to download YouTube, Facebook, Instagram and TikTok videos in HD MP4 / audio.</p></div>
+    <nav class="foot-links"><a href="#how">How it works</a><a href="#faq">FAQ</a></nav>
   </div>
 </footer>
 <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.10.1/dist/ffmpeg.min.js"></script>
@@ -226,7 +225,7 @@ function attachDownloadButtons(){
       if(!adShownForVideo()){
         markAdShownForVideo();
         window.open(DIRECT_LINK,'_blank','noopener');
-        alert('Sponsored লিংক নতুন ট্যাবে খুলেছে। এই ভিডিওর জন্য আবার Download বাটনে চাপ দিলে আসল ভিডিও ডাউনলোড হবে। নতুন ভিডিওর প্রথম ক্লিকে আবার স্পন্সর লিংক খুলবে।');
+        alert('A Sponsored link opened in a new tab. Press the Download button again for this video to download the real video. The first click for a new video will open a Sponsored link again.');
         return;
       }
       window.open(u,'_blank','noopener');
@@ -246,67 +245,67 @@ function markChips(k){document.querySelectorAll('.chip').forEach(c=>c.classList.
 let timer=null,startedAt=0;
 async function resolve(){
   const url=$('#urlInput').value.trim();
-  if(!url){alert('আগে একটি ভিডিও লিংক দিন');return;}
+  if(!url){alert('Please enter a video link first');return;}
   const key=detect(url);markChips(key);
   const out=$('#resultBox');out.classList.add('show');
   startedAt=Date.now();
-  out.innerHTML='<p>খোঁজা হচ্ছে… <span id="elapsed">০ সেকেন্ড</span></p><p class="small">আসল ভিডিওর নাম, ছবি ও ডাউনলোড ফরম্যাট কয়েক সেকেন্ডে আসার কথা।</p>';
+  out.innerHTML='<p>Searching… <span id="elapsed">0 seconds</span></p><p class="small">The real video title, thumbnail and download formats should appear in a few seconds.</p>';
   clearInterval(timer);
-  timer=setInterval(()=>{const e=$('#elapsed');if(e)e.textContent=Math.floor((Date.now()-startedAt)/1000)+' সেকেন্ড';},500);
+  timer=setInterval(()=>{const e=$('#elapsed');if(e)e.textContent=Math.floor((Date.now()-startedAt)/1000)+' seconds';},500);
   try{
     const r=await fetch('/api/resolve?url='+encodeURIComponent(url));
     const d=await r.json();
     clearInterval(timer);
     if(!d.ok){
-      out.innerHTML=`<div class="err"><b>দুঃখিত, ভিডিও আনা যায়নি।</b><br>${esc(d.error||'আবার চেষ্টা করুন।')}</div>${d.originalUrl?`<p><a href="${esc(d.originalUrl)}" target="_blank" rel="noopener">আসল ভিডিও দেখুন ↗</a></p>`:''}`;
+      out.innerHTML=`<div class="err"><b>Sorry, the video could not be fetched.</b><br>${esc(d.error||'Please try again.')}</div>${d.originalUrl?`<p><a href="${esc(d.originalUrl)}" target="_blank" rel="noopener">Watch original video ↗</a></p>`:''}`;
       return;
     }
     currentVideoKey=d.originalUrl||url;
     let fmts='';
     if(d.formats && d.formats.length){
-      fmts='<p class="small">Sponsored: এই ভিডিওর প্রথম ডাউনলোড ক্লিকে একটি স্পন্সর লিংক নতুন ট্যাবে খুলবে, এই ভিডিওর পরের ক্লিকগুলোতে সরাসরি ডাউনলোড হবে। নতুন ভিডিওর প্রথম ক্লিকে আবার স্পন্সর লিংক খুলবে।</p>'+d.formats.map(f=>`<div class="q-row"><div><span class="q-badge">${esc(f.label.split('—')[0].trim())}</span> <span class="q-name">${esc(f.label)}</span><br><span class="q-size">${esc(f.note||'')}</span></div><button type="button" class="q-dl dl-btn" data-url="${esc(f.url)}">Download</button></div>`).join('');
+      fmts='<p class="small">Sponsored: the first download click for this video opens a Sponsored link in a new tab; later clicks for this video download directly. The first click for a new video opens a Sponsored link again.</p>'+d.formats.map(f=>`<div class="q-row"><div><span class="q-badge">${esc(f.label.split('—')[0].trim())}</span> <span class="q-name">${esc(f.label)}</span><br><span class="q-size">${esc(f.note||'')}</span></div><button type="button" class="q-dl dl-btn" data-url="${esc(f.url)}">Download</button></div>`).join('');
     }else{
-      fmts=`<div class="warn"><b>এই ভিডিওর ডাউনলোড অপশন পাওয়া যায়নি।</b><br>${esc(d.message||'পাবলিক/অনুমতি থাকা ভিডিও হলে আবার চেষ্টা করুন।')}</div>`;
+      fmts=`<div class="warn"><b>No download options were found for this video.</b><br>${esc(d.message||'If it is a public / permitted video, please try again.')}</div>`;
     }
     out.innerHTML=`<div class="result-grid">
-      ${d.thumbnail?`<div class="thumb"><img src="${esc(d.thumbnail)}" alt="ভিডিও ছবি" referrerpolicy="no-referrer" onerror="this.style.display='none'"><span class="plat-badge">${esc(d.platform||'')}</span>${d.duration?`<span class="duration">${esc(d.duration)}</span>`:''}</div>`:''}
-      <div><div class="r-title">${esc(d.title||'ভিডিও')}</div>
-      <div class="r-meta">${d.author?`লেখক/চ্যানেল: ${esc(d.author)} • `:''}প্ল্যাটফর্ম: ${esc(d.platform||'')}${d.duration?` • সময়: ${esc(d.duration)}`:''}</div>
-      <p><a href="${esc(d.originalUrl||url)}" target="_blank" rel="noopener">আসল ভিডিও দেখুন ↗</a></p></div>
-    </div>${d.note?`<p class="small"><b>নোট:</b> ${esc(d.note)}</p>`:''}${fmts}<p class="small">ডাউনলোড লিংক খুললে ব্রাউজারে ভিডিও চলতে পারে — সেখান থেকে Save/Download করুন।</p>`;
+      ${d.thumbnail?`<div class="thumb"><img src="${esc(d.thumbnail)}" alt="Video thumbnail" referrerpolicy="no-referrer" onerror="this.style.display='none'"><span class="plat-badge">${esc(d.platform||'')}</span>${d.duration?`<span class="duration">${esc(d.duration)}</span>`:''}</div>`:''}
+      <div><div class="r-title">${esc(d.title||'Video')}</div>
+      <div class="r-meta">${d.author?`Author/Channel: ${esc(d.author)} • `:''}Platform: ${esc(d.platform||'')}${d.duration?` • Duration: ${esc(d.duration)}`:''}</div>
+      <p><a href="${esc(d.originalUrl||url)}" target="_blank" rel="noopener">Watch original video ↗</a></p></div>
+    </div>${d.note?`<p class="small"><b>Note:</b> ${esc(d.note)}</p>`:''}${fmts}<p class="small">If opening a download link plays the video in the browser, use Save/Download from there.</p>`;
     attachDownloadButtons();
     // Facebook merged 1080p: Facebook's 1080p+ formats are
     // video-only; HD/SD are combined but lower resolution. Offer
     // a server-merged 1080p-with-sound option when a 1080p
     // video-only MP4 and an audio format both exist.
     if(d.platform==='Facebook' && d.formats){
-      const v1080=d.formats.find(f=>/1080p/.test(f.label) && /ভিডিও-only/.test(f.label));
-      const aud=d.formats.find(f=>/অডিও/.test(f.label) && !/ভিডিও-only/.test(f.label));
+      const v1080=d.formats.find(f=>/1080p/.test(f.label) && /Video-only/.test(f.label));
+      const aud=d.formats.find(f=>/Audio/.test(f.label) && !/Video-only/.test(f.label));
       const box=document.querySelector('#resultBox');
       if(v1080 && aud && box){
         const mrow=document.createElement('div');
         mrow.className='q-row';
-        mrow.innerHTML=`<div><span class="q-badge">MP4</span> <span class="q-name">সাউন্ডসহ ১০৮০পি মার্জড MP4 — ভিডিও + অডিও একসাথে</span><br><span class="q-size" id="fbMergeStatus">সার্ভারে ১০৮০পি ভিডিও + অডিও একসাথে করে দেওয়া হবে (কিছুক্ষণ সময় লাগতে পারে)।</span></div><button type="button" class="q-dl" id="fbMergeBtn">তৈরি করুন</button>`;
+        mrow.innerHTML=`<div><span class="q-badge">MP4</span> <span class="q-name">Merged MP4 with sound 1080p — video + audio combined</span><br><span class="q-size" id="fbMergeStatus">1080p video + audio will be combined on the server (may take a while).</span></div><button type="button" class="q-dl" id="fbMergeBtn">Create</button>`;
         box.insertBefore(mrow, box.querySelector('.q-row'));
         document.getElementById('fbMergeBtn').onclick=async()=>{
           const st=document.getElementById('fbMergeStatus');
-          st.textContent='মার্জ শুরু হচ্ছে…';
+          st.textContent='Merge starting…';
           try{
             const r=await fetch('/api/merge2?v='+encodeURIComponent(v1080.url)+'&a='+encodeURIComponent(aud.url));
             const j=await r.json();
-            if(!j.ok){st.textContent='দুঃখিত: '+(j.error||'মার্জ শুরু করা যায়নি।');return;}
+            if(!j.ok){st.textContent='Sorry: '+(j.error||'Merge could not be started.');return;}
             const poll=async()=>{
               const s=await (await fetch('/api/merge/status?job='+j.job)).json();
               if(s.status==='ready'){
-                st.innerHTML='তৈরি! <a href="/api/merge/file?job='+j.job+'" target="_blank" rel="noopener">সাউন্ডসহ ১০৮০পি ডাউনলোড করুন ↗</a>';
+                st.innerHTML='Ready! <a href="/api/merge/file?job='+j.job+'" target="_blank" rel="noopener">Download 1080p with sound ↗</a>';
                 return;
               }
-              if(s.status==='error'){st.textContent='দুঃখিত: '+(s.error||'মার্জ ব্যর্থ হয়েছে।');return;}
-              st.textContent=s.stage||'কাজ চলছে…';
+              if(s.status==='error'){st.textContent='Sorry: '+(s.error||'Merge failed.');return;}
+              st.textContent=s.stage||'Working…';
               setTimeout(poll,5000);
             };
             poll();
-          }catch(e){st.textContent='সার্ভারে সমস্যা হয়েছে। আবার চেষ্টা করুন।';}
+          }catch(e){st.textContent='There was a server problem. Please try again.';}
         };
       }
     }
@@ -318,27 +317,27 @@ async function resolve(){
       if(box){
         const mrow=document.createElement('div');
         mrow.className='q-row';
-        mrow.innerHTML=`<div><span class="q-badge">MP4</span> <span class="q-name">সাউন্ডসহ মার্জড MP4 (৭২০পি) — FFmpeg দিয়ে এক করা</span><br><span class="q-size" id="ytMergeStatus">সার্ভারে ৭২০পি ভিডিও + অডিও একসাথে করে দেওয়া হবে। লম্বা ভিডিওতে কয়েক মিনিট লাগতে পারে, ৫০০MB-এর বেশি হলে মার্জ হবে না।</span></div><button type="button" class="q-dl" id="ytMergeBtn">তৈরি করুন</button>`;
+        mrow.innerHTML=`<div><span class="q-badge">MP4</span> <span class="q-name">Merged MP4 with sound (720p) — combined with FFmpeg</span><br><span class="q-size" id="ytMergeStatus">720p video + audio will be combined on the server. Long videos may take a few minutes; files over 500MB will not merge.</span></div><button type="button" class="q-dl" id="ytMergeBtn">Create</button>`;
         box.insertBefore(mrow, box.querySelector('.q-row'));
         document.getElementById('ytMergeBtn').onclick=async()=>{
           const st=document.getElementById('ytMergeStatus');
-          st.textContent='মার্জ শুরু হচ্ছে…';
+          st.textContent='Merge starting…';
           try{
             const r=await fetch('/api/merge?url='+encodeURIComponent(url));
             const j=await r.json();
-            if(!j.ok){st.textContent='দুঃখিত: '+(j.error||'মার্জ শুরু করা যায়নি।');return;}
+            if(!j.ok){st.textContent='Sorry: '+(j.error||'Merge could not be started.');return;}
             const poll=async()=>{
               const s=await (await fetch('/api/merge/status?job='+j.job)).json();
               if(s.status==='ready'){
-                st.innerHTML='তৈরি! <a href="/api/merge/file?job='+j.job+'" target="_blank" rel="noopener">সাউন্ডসহ MP4 ডাউনলোড করুন ↗</a>';
+                st.innerHTML='Ready! <a href="/api/merge/file?job='+j.job+'" target="_blank" rel="noopener">Download MP4 with sound ↗</a>';
                 return;
               }
-              if(s.status==='error'){st.textContent='দুঃখিত: '+(s.error||'মার্জ ব্যর্থ হয়েছে।');return;}
-              st.textContent=s.stage||'কাজ চলছে…';
+              if(s.status==='error'){st.textContent='Sorry: '+(s.error||'Merge failed.');return;}
+              st.textContent=s.stage||'Working…';
               setTimeout(poll,5000);
             };
             poll();
-          }catch(e){st.textContent='সার্ভারে সমস্যা হয়েছে। আবার চেষ্টা করুন।';}
+          }catch(e){st.textContent='There was a server problem. Please try again.';}
         };
       }
     }
@@ -348,30 +347,30 @@ async function resolve(){
     // the fallback when server merge gets 403. First click follows
     // the same Sponsored first-click rule as Download buttons.
     if(d.platform==='YouTube' && d.formats){
-      const vids=(d.formats||[]).filter(f=>/ভিডিও-only/.test(f.label) && /^MP4/.test(f.label));
+      const vids=(d.formats||[]).filter(f=>/Video-only/.test(f.label) && /^MP4/.test(f.label));
       const resOf=f=>{const m=(f.label||'').match(/(\d+)p/);return m?parseInt(m[1],10):0;};
       // User's instruction: merged output is 720p for ALL videos
       // (smaller, faster, phone-friendly). Pick 720p if present,
       // else the closest resolution to 720p.
       vids.sort((a,b)=>Math.abs(resOf(a)-720)-Math.abs(resOf(b)-720));
-      const aud=(d.formats||[]).find(f=>/অডিও/.test(f.label) && !/ভিডিও-only/.test(f.label));
+      const aud=(d.formats||[]).find(f=>/Audio/.test(f.label) && !/Video-only/.test(f.label));
       const box=document.querySelector('#resultBox');
       if(vids.length && aud && box){
         const brow=document.createElement('div');
         brow.className='q-row';
-        brow.innerHTML=`<div><span class="q-badge">MP4</span> <span class="q-name">ব্রাউজারে মার্জ করুন — ৭২০পি সাউন্ডসহ (আপনার ফোনেই ভিডিও+অডিও এক হবে, সার্ভারে নয়)</span><br><span class="q-size" id="browserMergeStatus">আপনার ব্রাউজার সরাসরি ৭২০পি ভিডিও আর অডিও টেনে আপনার ডিভাইসেই এক করবে। লম্বা/বড় ভিডিওতে ফোনের মেমোরি কম পড়তে পারে।</span></div><button type="button" class="q-dl" id="browserMergeBtn">ব্রাউজারে মার্জ করুন</button>`;
+        brow.innerHTML=`<div><span class="q-badge">MP4</span> <span class="q-name">Merge in Browser — 720p with sound (video + audio are combined on your own device, not on the server)</span><br><span class="q-size" id="browserMergeStatus">Your browser will fetch the 720p video and audio directly and combine them on your device. Long/large videos may run low on phone memory.</span></div><button type="button" class="q-dl" id="browserMergeBtn">Merge in Browser</button>`;
         box.insertBefore(brow, box.querySelector('.q-row'));
         document.getElementById('browserMergeBtn').onclick=async()=>{
           if(!adShownForVideo()){
             markAdShownForVideo();
             window.open(DIRECT_LINK,'_blank','noopener');
-            alert('Sponsored লিংক নতুন ট্যাবে খুলেছে। এই ভিডিওর জন্য আবার "ব্রাউজারে মার্জ করুন" বাটনে চাপ দিলে মার্জ শুরু হবে।');
+            alert('A Sponsored link opened in a new tab. Press the "Merge in Browser" button again for this video to start merging.');
             return;
           }
           const st=document.getElementById('browserMergeStatus');
           try{
-            if(typeof FFmpeg==='undefined'||!FFmpeg.createFFmpeg){st.textContent='দুঃখিত: এই ব্রাউজারে FFmpeg লোড হয়নি। নেট সংযোগ চেক করে আবার চেষ্টা করুন।';return;}
-            st.textContent='FFmpeg লোড হচ্ছে… (প্রথমবার একটু সময় লাগতে পারে)';
+            if(typeof FFmpeg==='undefined'||!FFmpeg.createFFmpeg){st.textContent='Sorry: FFmpeg did not load in this browser. Check your connection and try again.';return;}
+            st.textContent='Loading FFmpeg… (may take a little while the first time)';
             if(!window._svFF){
               const {createFFmpeg,fetchFile}=FFmpeg;
               window._svFF={ffmpeg:createFFmpeg({log:false,corePath:'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js'}),fetchFile};
@@ -387,22 +386,22 @@ async function resolve(){
             const WORKER_PROXY='https://proxy.life23243.workers.dev';
             const WORKER_PARAM='link';
             const viaWorker=u=>WORKER_PROXY?WORKER_PROXY+'?'+WORKER_PARAM+'='+encodeURIComponent(u):u;
-            st.textContent='ভিডিও ডাউনলোড হচ্ছে আপনার ব্রাউজারে…';
+            st.textContent='Downloading video in your browser…';
             const vdata=await fetchFile(viaWorker(vids[0].url));
-            st.textContent='অডিও ডাউনলোড হচ্ছে…';
+            st.textContent='Downloading audio…';
             const adata=await fetchFile(viaWorker(aud.url));
             ffmpeg.FS('writeFile','v.mp4',vdata);
             ffmpeg.FS('writeFile','a.m4a',adata);
-            st.textContent='ভিডিও + অডিও এক করা হচ্ছে…';
+            st.textContent='Combining video + audio…';
             await ffmpeg.run('-i','v.mp4','-i','a.m4a','-c','copy','-shortest','out.mp4');
             const out=ffmpeg.FS('readFile','out.mp4');
             const blob=new Blob([out.buffer],{type:'video/mp4'});
             const blobUrl=URL.createObjectURL(blob);
             const safeTitle=(d.title||'video').replace(/[^\w\u0980-\u09FF\- ]+/g,'').trim().slice(0,60)||'video';
-            st.innerHTML='তৈরি! <a href="'+blobUrl+'" download="'+esc(safeTitle)+'_sound.mp4">সাউন্ডসহ MP4 ডাউনলোড করুন ↗</a> ('+Math.round(blob.size/1048576)+' MB)';
+            st.innerHTML='Ready! <a href="'+blobUrl+'" download="'+esc(safeTitle)+'_sound.mp4">Download MP4 with sound ↗</a> ('+Math.round(blob.size/1048576)+' MB)';
             try{ffmpeg.FS('unlink','v.mp4');ffmpeg.FS('unlink','a.m4a');ffmpeg.FS('unlink','out.mp4');}catch(e){}
           }catch(e){
-            st.textContent='দুঃখিত: ব্রাউজার মার্জ ব্যর্থ হয়েছে। '+(e&&e.message?e.message:'')+' যদি CORS/নেটওয়ার্ক এরর হয়, তাহলে এই ভিডিওর লিংক ব্রাউজার থেকে টানা যাচ্ছে না।';
+            st.textContent='Sorry: Browser merge failed. '+(e&&e.message?e.message:'')+' If it is a CORS/network error, this video link cannot be fetched from the browser.';
           }
         };
       }
@@ -410,7 +409,7 @@ async function resolve(){
     // YouTube: if the fast list has no sound-included format yet,
     // fetch the android combined format in the background and
     // prepend it when it arrives — without blocking the first list.
-    if(d.platform==='YouTube' && !(d.formats||[]).some(f=>/সাউন্ডসহ/.test(f.label))){
+    if(d.platform==='YouTube' && !(d.formats||[]).some(f=>/With sound/.test(f.label))){
       fetch('/api/combined?url='+encodeURIComponent(url)).then(r=>r.json()).then(c=>{
         if(!c.ok || !c.format) return;
         const box=document.querySelector('#resultBox');
@@ -425,7 +424,7 @@ async function resolve(){
     }
   }catch(e){
     clearInterval(timer);
-    out.innerHTML='<div class="err"><b>সার্ভারে সমস্যা হয়েছে।</b><br>আবার চেষ্টা করুন।</div>';
+    out.innerHTML='<div class="err"><b>There was a server problem.</b><br>Please try again.</div>';
   }
 }
 $('#fetchBtn').onclick=resolve;
@@ -444,28 +443,28 @@ document.getElementById('fileMergeBtn').onclick=async()=>{
   const st=document.getElementById('fileMergeStatus');
   const vf=document.getElementById('fileMergeVideo').files[0];
   const af=document.getElementById('fileMergeAudio').files[0];
-  if(!vf||!af){st.textContent='দুঃখিত: ভিডিও ফাইল আর অডিও ফাইল — দুটোই বেছে নিন।';return;}
+  if(!vf||!af){st.textContent='Sorry: Please choose both a video file and an audio file.';return;}
   try{
-    if(typeof FFmpeg==='undefined'||!FFmpeg.createFFmpeg){st.textContent='দুঃখিত: এই ব্রাউজারে FFmpeg লোড হয়নি। নেট সংযোগ চেক করে আবার চেষ্টা করুন।';return;}
-    st.textContent='FFmpeg লোড হচ্ছে… (প্রথমবার একটু সময় লাগতে পারে)';
+    if(typeof FFmpeg==='undefined'||!FFmpeg.createFFmpeg){st.textContent='Sorry: FFmpeg did not load in this browser. Check your connection and try again.';return;}
+    st.textContent='Loading FFmpeg… (may take a little while the first time)';
     if(!window._svFF){
       const {createFFmpeg,fetchFile}=FFmpeg;
       window._svFF={ffmpeg:createFFmpeg({log:false,corePath:'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js'}),fetchFile};
       await window._svFF.ffmpeg.load();
     }
     const {ffmpeg,fetchFile}=window._svFF;
-    st.textContent='ফাইল পড়া হচ্ছে…';
+    st.textContent='Reading files…';
     ffmpeg.FS('writeFile','v.mp4',await fetchFile(vf));
     ffmpeg.FS('writeFile','a.m4a',await fetchFile(af));
-    st.textContent='ভিডিও + অডিও এক করা হচ্ছে…';
+    st.textContent='Combining video + audio…';
     await ffmpeg.run('-i','v.mp4','-i','a.m4a','-c','copy','-shortest','out.mp4');
     const out=ffmpeg.FS('readFile','out.mp4');
     const blob=new Blob([out.buffer],{type:'video/mp4'});
     const blobUrl=URL.createObjectURL(blob);
-    st.innerHTML='তৈরি! <a href="'+blobUrl+'" download="merged_sound.mp4">সাউন্ডসহ MP4 ডাউনলোড করুন ↗</a> ('+Math.round(blob.size/1048576)+' MB)';
+    st.innerHTML='Ready! <a href="'+blobUrl+'" download="merged_sound.mp4">Download MP4 with sound ↗</a> ('+Math.round(blob.size/1048576)+' MB)';
     try{ffmpeg.FS('unlink','v.mp4');ffmpeg.FS('unlink','a.m4a');ffmpeg.FS('unlink','out.mp4');}catch(e){}
   }catch(e){
-    st.textContent='দুঃখিত: ফাইল মার্জ ব্যর্থ হয়েছে। '+(e&&e.message?e.message:'');
+    st.textContent='Sorry: File merge failed. '+(e&&e.message?e.message:'');
   }
 };
 document.querySelectorAll('.qa button').forEach(b=>b.onclick=()=>b.parentElement.classList.toggle('open'));
