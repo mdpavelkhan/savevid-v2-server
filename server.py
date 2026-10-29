@@ -734,16 +734,14 @@ class Handler(BaseHTTPRequestHandler):
         pass
 
     def send_response(self, code, message=None):
-        # Cross-origin isolation, v2 fresh site (2026-10-29):
-        # COEP "credentialless" (not require-corp) keeps
-        # SharedArrayBuffer enabled for ffmpeg.wasm browser merge
-        # (proven by require-corp on v1) while allowing
-        # no-cors cross-origin resources such as Adsterra
-        # bauval.org banners, which send NO CORP header and
-        # were blocked/empty under require-corp on v1.
+        # NO COOP/COEP headers (2026-10-29, single-thread fix):
+        # ffmpeg 0.12 single-thread core needs NO SharedArrayBuffer,
+        # so isolation headers are unnecessary — and COEP
+        # credentialless BLOCKED ffmpeg's worker.js from unpkg
+        # (it sends ACAO * but NO CORP header), which broke the
+        # merge before it even started. Without COEP, the worker
+        # loads via CORS and Adsterra banners load normally.
         super().send_response(code, message)
-        self.send_header("Cross-Origin-Opener-Policy", "same-origin")
-        self.send_header("Cross-Origin-Embedder-Policy", "credentialless")
 
     def _send_json(self, obj, status=200):
         body = json.dumps(obj, ensure_ascii=False).encode("utf-8")
